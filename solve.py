@@ -60,7 +60,9 @@ def solve(length=5, guess_words=[]):
                 occurrences[w[i]] += 1
                 valid_chars[i] =  valid_chars[i].replace(w[i],'') 
             if(q[i] == indicators['absent']):
-                max_occurrences[w[i]] = occurrences[w[i]]
+                # max_occurrences[w[i]] = occurrences[w[i]]
+                max_occurrences[w[i]] = sum([1 if( w[i]==w[j] and q[j]!=indicators['absent']) else 0 for j in range(length)])
+                logger.debug('Max occur of {} is {}'.format(w[i] ,max_occurrences[w[i]]))
                 valid_chars = [vc.replace(w[i],'') if (len(valid_chars)>1 and occurrences[w[i]] == 0) else vc for vc in valid_chars]
 
         pattern = ''.join([str('['+vc+']') for vc in valid_chars])
@@ -80,7 +82,8 @@ def solve(length=5, guess_words=[]):
                 r = re.compile(pattern)
                 valid_words = list(filter(r.match, valid_words))
                 logger.debug(str(valid_words[:100]))
-        occurrences = { k:v-1 if v>0 else 0 for (k,v) in occurrences.items()}
+        # occurrences = { k:0 if v>0 else 0 for (k,v) in occurrences.items()}
+        occurrences = { k:0 for (k,v) in occurrences.items()}
 
 
     logger.debug('Valid characters: ' + str(valid_chars))
