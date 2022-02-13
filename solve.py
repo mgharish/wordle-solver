@@ -62,6 +62,7 @@ def solve(length=5, guess_words=[]):
             if(q[i] == indicators['absent']):
                 max_occurrences[w[i]] = sum([1 if( w[i]==w[j] and q[j]!=indicators['absent']) else 0 for j in range(length)])
                 logger.debug('Max occur of {} is {}'.format(w[i] ,max_occurrences[w[i]]))
+                valid_chars = [vc.replace(w[i],'') if (max_occurrences[w[i]] == 0 and len(vc) != 1) else vc for vc in valid_chars]
                 valid_chars[i] =  valid_chars[i].replace(w[i],'') 
             logger.debug('Valid characters: ' + str(valid_chars))
 
